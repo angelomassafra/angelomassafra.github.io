@@ -16,8 +16,8 @@ import os
 
 # Set filepath
 current_dir = str(os.getcwd())
-base_dir = '\JSON'
-filename = "\CellComplex_Sample1.json"
+base_dir = '/JSON'
+filename = "/CellComplex_Sample1.json"
 relative_path = "https://github.com/angelomassafra/PhD/blob/main"+base_dir+filename
 
 # Functions
