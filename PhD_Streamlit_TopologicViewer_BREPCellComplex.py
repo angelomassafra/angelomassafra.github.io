@@ -14,6 +14,20 @@ import plotly.graph_objs as go
 
 import os
 
+
+import requests
+
+url = "https://github.com/angelomassafra/PhD/raw/main/JSON/CellComplex_Sample1.json"
+filename = "CellComplex_Sample1.json"
+
+response = requests.get(url)
+response.raise_for_status()
+
+with open(filename, "wb") as file:
+    file.write(response.content)
+
+print("File downloaded successfully.")
+
 # Set filepath
 current_dir = str(os.getcwd())
 base_dir = '/JSON'
