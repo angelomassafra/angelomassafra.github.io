@@ -51,6 +51,7 @@ def Visualize_Cells_ByStringProp(tp_CellComplex,propName,faceOpacity):
     dataList.extend(legend_traces)
     
     fig = Plotly.FigureByData(dataList)
+    PlotlyFig_Set_Layout(fig)
     st.plotly_chart(fig)
 
 def Visualize_Cells_ByNumberProp(tp_CellComplex,propName,colorScale,faceOpacity):
@@ -78,6 +79,7 @@ def Visualize_Cells_ByNumberProp(tp_CellComplex,propName,colorScale,faceOpacity)
             
     fig = Plotly.FigureByData(dataList)
     colorBar = Plotly.AddColorBar(figure=fig,values=values,colorScale=colorScale,title=propName[4:],nTicks=11,width=20)
+    PlotlyFig_Set_Layout(fig)
     st.plotly_chart(fig)
 
 def Visualize_Face_ByStrProp(tp_CellComplex,tp_Faces,tp_Face_PropName):
@@ -125,6 +127,7 @@ def Visualize_Face_ByStrProp(tp_CellComplex,tp_Faces,tp_Face_PropName):
     dataList.extend(legend_traces)
 
     fig = Plotly.FigureByData(dataList)
+    PlotlyFig_Set_Layout(fig)
     st.plotly_chart(fig)
 
 def Visualize_Apertures_ByProp(tp_CellComplex,tp_Faces,tp_Aperture_PropName):
@@ -177,6 +180,7 @@ def Visualize_Apertures_ByProp(tp_CellComplex,tp_Faces,tp_Aperture_PropName):
     dataList.extend(legend_traces)
 
     fig = Plotly.FigureByData(dataList)
+    PlotlyFig_Set_Layout(fig)
     st.plotly_chart(fig)
 
 def Visualize_Graph(tp_CellComplex):
@@ -196,114 +200,113 @@ def Visualize_Graph(tp_CellComplex):
     fig=Plotly.FigureByData(dataList)
     st.plotly_chart(fig)
 
+def PlotlyFig_Set_Layout(fig):
+    fig.update_layout(width=800,height=550,plot_bgcolor='rgba(255, 255, 255,0.1)')
+
+    return fig
+
+
+import io
+
+
+
 def main():
+
     #Title
     st.markdown("<h1 style='font-size:24px;'>Topologic Viewer</h1>", unsafe_allow_html=True)
 
-    uploaded_file = st.file_uploader("Choose a file")
-    folder_path = st.text_input("Enter the folder path:")
-    file_name = None
-    if uploaded_file is not None:
-        # Process the file
-        file_contents = uploaded_file.read()
-        file_name = uploaded_file.name
-        st.write("File name:", file_name)
-        st.write("Folder path:", folder_path)
+    #Sidebar
+    st.sidebar.title("Input")
 
+    #Upload Topologic JSON file
+    uploaded_file = st.sidebar.file_uploader("Upload Topologic JSON file")
 
+    #Create Topologic CellComplex
+    tp_CellComplex = Topology.ByJSONFile(file=uploaded_file)
 
-    #CellComplex
-    tp_CellComplex = Topology.ByJSONPath(path=folder_path+file_name)
-
-    #Visualization mode
-    options_VisualizationMode = ['Cells','Faces','Apertures','Graph']
-    selected_option_VisualizationMode = st.selectbox('Visualization Mode', options_VisualizationMode)
-
-    #CellVisualization
-    if selected_option_VisualizationMode == "Cells":
-        # Define options for the dropdown menu
-        options = []
-        for tp_Cell in CellComplex.Cells(tp_CellComplex):
-            d = Topology.Dictionary(tp_Cell)
-            k = list(Dictionary.Keys(d))
-            j=0
-            for i in k:
-                if i not in options:
-                    options.append(i)
-                j=j+1
-        options=sorted(list(set(options)))
-        selected_option = st.selectbox('Key', options)
-        #Strings
-        a_Cell = CellComplex.Cells(tp_CellComplex)[0]
-        d = Topology.Dictionary(a_Cell)
-        v = Dictionary.ValueAtKey(d,selected_option)
-        if isinstance(v,str):
-            # Create a sample plot using Plotly
-            Visualize_Cells_ByStringProp(tp_CellComplex,selected_option,0.2)
-        elif isinstance(v,float) or isinstance(v,int):
-            Visualize_Cells_ByNumberProp(tp_CellComplex,selected_option,'plasma',0.2)
-
-    #FaceVisualization
-    if selected_option_VisualizationMode == "Faces":
-
-        # Define options for the dropdown menu
-        options_faceType = ['externalVerticalFaces','internalVerticalFaces','internalHorizontalFaces','bottomHorizontalFaces','topHorizontalFaces']
-        selected_option_faceType = st.selectbox('FaceType', options_faceType)
-
-        # Define options for the dropdown menu
-        options = []
-        tp_Faces = CellComplex.Decompose(tp_CellComplex)[selected_option_faceType]
-        for tp_Face in tp_Faces:
-            d = Topology.Dictionary(tp_Face)
-            k = list(Dictionary.Keys(d))
-            v = list(Dictionary.Values(d))
-            j=0
-            for i in k:
-                if i not in options:
-                    if isinstance(v[j],str):
+    #Visualize
+    if tp_CellComplex is not None:
+        # Class to visualize
+        options_VisualizationMode = ['Cells','Faces','Apertures','Graph']
+        selected_option_VisualizationMode = st.sidebar.selectbox('Select Topologic Class', options_VisualizationMode)
+        #Cell Visualization
+        if selected_option_VisualizationMode == "Cells":
+            # Define options for the dropdown menu
+            options = []
+            for tp_Cell in CellComplex.Cells(tp_CellComplex):
+                k = list(Dictionary.Keys( Topology.Dictionary(tp_Cell)))
+                j=0
+                for i in k:
+                    if i not in options:
                         options.append(i)
-                j=j+1
-        options=sorted(list(set(options)))
-        selected_option = st.selectbox('Key', options)
+                    j=j+1
+            options=sorted(list(set(options)))
+            selected_option = st.sidebar.selectbox('Key', options)
+            # Cell properties
+            a_Cell = CellComplex.Cells(tp_CellComplex)[0]
+            d = Topology.Dictionary(a_Cell)
+            v = Dictionary.ValueAtKey(d,selected_option)
+            # Visualize
+            if isinstance(v,str):
+                # Create a sample plot using Plotly
+                Visualize_Cells_ByStringProp(tp_CellComplex,selected_option,0.2)
+            elif isinstance(v,float) or isinstance(v,int):
+                Visualize_Cells_ByNumberProp(tp_CellComplex,selected_option,'plasma',0.2)
 
-        # Plotly
-        Visualize_Face_ByStrProp(tp_CellComplex,tp_Faces,selected_option)
+        #FaceVisualization
+        elif selected_option_VisualizationMode == "Faces":
+            # Define options for the dropdown menu
+            options_faceType = ['externalVerticalFaces','internalVerticalFaces','internalHorizontalFaces','bottomHorizontalFaces','topHorizontalFaces']
+            selected_option_faceType = st.sidebar.selectbox('FaceType', options_faceType)
+            options = []
+            tp_Faces = CellComplex.Decompose(tp_CellComplex)[selected_option_faceType]
+            for tp_Face in tp_Faces:
+                d = Topology.Dictionary(tp_Face)
+                k = list(Dictionary.Keys(d))
+                v = list(Dictionary.Values(d))
+                j=0
+                for i in k:
+                    if i not in options:
+                        if isinstance(v[j],str):
+                            options.append(i)
+                    j=j+1
+            options=sorted(list(set(options)))
+            selected_option = st.sidebar.selectbox('Key', options)
+            # Visualize
+            Visualize_Face_ByStrProp(tp_CellComplex,tp_Faces,selected_option)
 
-    #Aperture Visualizaton
-    if selected_option_VisualizationMode == "Apertures":
+        #Aperture Visualizaton
+        if selected_option_VisualizationMode == "Apertures":
+            # Define options for the dropdown menu
+            options_faceType = ['externalVerticalFaces','internalVerticalFaces','internalHorizontalFaces','bottomHorizontalFaces','topHorizontalFaces']
+            selected_option_faceType = st.sidebar.selectbox('FaceType', options_faceType)
+            options = []
+            tp_Faces = CellComplex.Decompose(tp_CellComplex)[selected_option_faceType]
+            tp_Apertures = []
+            for tp_Face in tp_Faces:
+                ap = Topology.Apertures(tp_Face)
+                for a in ap:
+                    at = Aperture.ApertureTopology(a)
+                tp_Apertures.append(at)
+            for tp_Aperture in tp_Apertures:
+                d = Topology.Dictionary(tp_Aperture)
+                k = list(Dictionary.Keys(d))
+                v = list(Dictionary.Values(d))
+                j=0
+                for i in k:
+                    if i not in options:
+                        if isinstance(v[j],str):
+                            options.append(i)
+                    j=j+1
+            options=sorted(list(set(options)))
+            selected_option = st.sidebar.selectbox('Key', options)
 
-        # Define options for the dropdown menu
-        options_faceType = ['externalVerticalFaces','internalVerticalFaces','internalHorizontalFaces','bottomHorizontalFaces','topHorizontalFaces']
-        selected_option_faceType = st.selectbox('FaceType', options_faceType)
+            # Plotly
+            Visualize_Apertures_ByProp(tp_CellComplex,tp_Faces,selected_option)
 
-        # Define options for the dropdown menu
-        options = []
-        tp_Faces = CellComplex.Decompose(tp_CellComplex)[selected_option_faceType]
-        tp_Apertures = []
-        for tp_Face in tp_Faces:
-            ap = Topology.Apertures(tp_Face)
-            for a in ap:
-                at = Aperture.ApertureTopology(a)
-            tp_Apertures.append(at)
-        for tp_Aperture in tp_Apertures:
-            d = Topology.Dictionary(tp_Aperture)
-            k = list(Dictionary.Keys(d))
-            v = list(Dictionary.Values(d))
-            j=0
-            for i in k:
-                if i not in options:
-                    if isinstance(v[j],str):
-                        options.append(i)
-                j=j+1
-        options=sorted(list(set(options)))
-        selected_option = st.selectbox('Key', options)
-
-        # Plotly
-        Visualize_Apertures_ByProp(tp_CellComplex,tp_Faces,selected_option)
-
-    #Graph Visualization
-    if selected_option_VisualizationMode == "Graph":
-        Visualize_Graph(tp_CellComplex)
+        #Graph Visualization
+        if selected_option_VisualizationMode == "Graph":
+            Visualize_Graph(tp_CellComplex)
 
 
 
