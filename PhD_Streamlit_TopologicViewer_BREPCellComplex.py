@@ -1,6 +1,5 @@
+#Import libraries
 import streamlit as st
-import plotly.express as px
-
 from topologicpy.CellComplex import CellComplex
 from topologicpy.Plotly import Plotly
 from topologicpy.Dictionary import Dictionary
@@ -9,11 +8,7 @@ from topologicpy.Color import Color
 from topologicpy.Cell import Cell
 from topologicpy.Graph import Graph
 from topologicpy.Aperture import Aperture
-
 import plotly.graph_objs as go
-
-import os
-
 
 # Functions
 def create_legend_trace(color, label):
@@ -202,11 +197,11 @@ def Visualize_Graph(tp_CellComplex):
 
 def PlotlyFig_Set_Layout(fig):
     fig.update_layout(width=800,height=550,plot_bgcolor='rgba(255, 255, 255,0.1)')
-
+    Plotly.FigureExportToPNG(fig,path="C:/Users/massa/Downloads/TopologicStreamlit.png",overwrite=True)
     return fig
 
 
-import io
+
 
 
 
