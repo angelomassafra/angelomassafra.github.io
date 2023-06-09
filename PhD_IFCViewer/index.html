@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--Attribuisco titolo all'intestazione della pagina nel browser-->
+        <title>IFCViewer</title>
+        <!--Attribuisco icona favicon all'intestazione della pagina nel browser-->
+        <link rel="icon" type="image/x-icon" href="./../static/dt_favicon.ico">
+        <!--Collego HTML a file CSS per gli stili di visualizzazione-->
+        <link rel="stylesheet" href="./../CSS/styles.css"> <!---->
+        <!--Collego HTML a Google Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+    </head>
+
+<body>
+
+    <header>
+        <!--Logo-->
+        <img class="spinning logo" src="./../static/dt_logo.svg" alt="dt logo">
+        <!--Titolo a sinistra-->
+        <h3>IFC Viewer</h3>
+        <!--Titolo a destra-->
+        <h4></h4>
+    </header>
+
+    <canvas id="three-canvas" width="300" height="300"></canvas>
+    <script src="bundle.js""></script>
+    
+</body>
+</html>

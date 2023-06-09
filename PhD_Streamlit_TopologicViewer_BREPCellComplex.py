@@ -54,8 +54,6 @@ def Visualize_Cells_ByNumberProp(tp_CellComplex,propName,colorScale,faceOpacity)
     data = Plotly.DataByTopology(tp_CellComplex, faceOpacity=faceOpacity, showVertexLegend=False, showEdgeLegend=False)
     dataList += data
 
-
-
     values = []
     for tp_Cell in CellComplex.Cells(tp_CellComplex):
         value = Dictionary.ValueAtKey(Topology.Dictionary(tp_Cell), propName)
@@ -200,11 +198,7 @@ def PlotlyFig_Set_Layout(fig):
     Plotly.FigureExportToPNG(fig,path="C:/Users/massa/Downloads/TopologicStreamlit.png",overwrite=True)
     return fig
 
-
-
-
-
-
+# Streamlit
 def main():
 
     #Title
@@ -236,7 +230,7 @@ def main():
                         options.append(i)
                     j=j+1
             options=sorted(list(set(options)))
-            selected_option = st.sidebar.selectbox('Key', options)
+            selected_option = st.sidebar.selectbox('Select Key', options)
             # Cell properties
             a_Cell = CellComplex.Cells(tp_CellComplex)[0]
             d = Topology.Dictionary(a_Cell)
@@ -266,7 +260,7 @@ def main():
                             options.append(i)
                     j=j+1
             options=sorted(list(set(options)))
-            selected_option = st.sidebar.selectbox('Key', options)
+            selected_option = st.sidebar.selectbox('Select Key', options)
             # Visualize
             Visualize_Face_ByStrProp(tp_CellComplex,tp_Faces,selected_option)
 
@@ -294,7 +288,7 @@ def main():
                             options.append(i)
                     j=j+1
             options=sorted(list(set(options)))
-            selected_option = st.sidebar.selectbox('Key', options)
+            selected_option = st.sidebar.selectbox('Select Key', options)
 
             # Plotly
             Visualize_Apertures_ByProp(tp_CellComplex,tp_Faces,selected_option)
