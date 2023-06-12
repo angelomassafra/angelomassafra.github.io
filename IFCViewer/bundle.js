@@ -104287,10 +104287,10 @@ window.addEventListener("resize", () => {
 });
 
 // LOAD IFC
-const ifcUrl = "/static/IFCSample_HomeMaker.ifc";
+const ifcUrl = "/IFCViewer/static/IFCSample_HomeMaker.ifc";
 async function loadIfc() {
 	const ifcLoader = new IFCLoader();
-  ifcLoader.ifcManager.setWasmPath("../wasm_wit/");
+  ifcLoader.ifcManager.setWasmPath("../IFCViewer/wasm_wit/");
 	const model = await ifcLoader.loadAsync(ifcUrl);
 	scene.add(model);
 }
