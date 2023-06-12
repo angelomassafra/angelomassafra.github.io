@@ -104231,7 +104231,9 @@ class IFCLoader extends Loader {
 
 }
 
-///Importazione librerie
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // THREE SCENE
 //Creates the Three.js scene
@@ -104243,9 +104245,9 @@ const size = {
 };
 //Creates the camera (point of view of the user)
 const camera = new PerspectiveCamera(75, size.width / size.height);
-camera.position.z = 50;
-camera.position.y = 50;
-camera.position.x = 50;
+camera.position.z = 20;
+camera.position.y = 10;
+camera.position.x = 0;
 //Creates the lights of the scene
 const lightColor = 0xffffff;
 const ambientLight = new AmbientLight(lightColor, 0.5);
