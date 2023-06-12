@@ -1,0 +1,827 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow: hidden;
+}
+
+
+
+
+
+#file-input{
+    position: absolute;
+}
+
+#viewer-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* From uiverse.io */
+.button {
+    padding: 0.7rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background: var(--light-gray);
+    backdrop-filter: var(--blur-filter);
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+  }
+  
+  .button:hover {
+    background-image: var(--linear-gradient-red-blue);
+    box-shadow: 0px 15px 20px rgba(40, 40, 40, 0.4);
+    color: #fff;
+    fill: #fff;
+    transform: translateY(-3px);
+  }
+  
+.button:active {
+    transform: translateY(-1px);
+  }
+
+  .ifc-property-menu {
+    border: 1px solid gray;
+    width: 20rem;
+    position: absolute;
+    background-color: white;
+}
+
+.ifc-property-item {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0.5rem;
+    border-bottom: solid 1px gray;
+}
+
+.ifc-property-value {
+    width: 100%;
+    text-align: right;
+}
+
+/*Tree view: https://www.w3schools.com/howto/howto_js_treeview.asp*/
+
+.cboxes {
+  position: absolute;
+  max-width: 20 rem;
+}
+
+.ifc-tree-menu {
+    position: absolute;
+    min-width: 15rem;
+    overflow-y: scroll;
+    background-color: rgb(255, 255, 255);
+    height: 100vh;
+}
+
+li ul {
+    user-select: none;
+    cursor: pointer;
+}
+
+/* Remove default bullets */
+ul, #myUL {
+    list-style-type: none;
+}
+
+/* Remove margins and padding from the parent ul */
+#myUL {
+    margin: 0.5rem;
+    padding: 0;
+}
+
+/* Style the caret/arrow */
+.caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+}
+
+/* Create the caret/arrow with a unicode, and style it */
+.caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+.caret-down::before {
+    transform: rotate(90deg);
+}
+
+/* Hide the nested list */
+.nested {
+    display: none;
+}
+
+/* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+.active {
+    display: block;
+    margin-left: 10px;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow: hidden;
+}
+
+#viewer-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+    width: 100%;
+    height: 100%;
+}
+
+.checkboxes {
+    position: absolute;
+    left: 10rem;
+    top: 5rem;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    background-color: aqua;
+}
+
+.cardCheckBox {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  width: 15rem;
+  background-color:rgb(239, 239, 239);
+}
+
+.cboxinput{
+  background-color: red;
+}
+
+#text-container{
+
+    position: absolute;
+    margin-top: 5rem;
+    margin-right: 5rem;
+    display: flex;
+}
+
+#text-container *:first-child {
+    margin-right: 3px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+  
+    --light-gray: rgb(240, 240, 240);
+    --light-black: rgb(70, 70, 70);
+    --dt-blu: rgb(9,125,193);
+    --light-blue: #8dbafff0;
+    --translucent-white: rgba(255, 255, 255, 0.7);
+    ---coral-red: rgb(255,122,122);
+    --linear-gradient-red-blue: linear-gradient(160deg, var(--dt-blu) 0%, var(---coral-red) 100%);
+    --normal-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    --blur-filter: blur(8px);
+  }
+  
+  header {
+    color: var(--light-black);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    background-image: var(--linear-gradient-red-blue);
+    margin-left: 3rem; 
+  }
+  
+  header *:last-child {
+    margin-left: auto;
+    color: var(--light-black);
+  }
+  
+  .toolbar {
+    color: var(--light-black);
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    background-color: lightgray;
+  }
+  
+  .toolbar *:last-child {
+    margin-left: auto;
+    color: var(---coral-red);
+  }
+
+  
+  h2 {
+      font-size: 1rem;
+  }
+  
+  h3 {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--light-gray);
+  }
+  
+  .projectId {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: gray;
+  }
+  
+  h4 {
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--light-black);
+  }
+  
+  h5 {
+    
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--dt-blu);
+  }
+
+  h6 {
+    font-weight: 600;
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    
+    font-size: 1.5rem;
+    color: var(--light-black);
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+      font-size: 12px;
+  }
+  
+  a {
+      text-decoration: none;
+  }
+  
+  iframe {
+      width: 100%;
+      height: 100vh;
+  }
+  
+  .hide-overflow {
+      overflow: hidden;
+  }
+  
+  .bottom {
+      bottom: 1rem;
+  }
+  
+  .spinning {
+      animation: logo-spin 8s infinite 0s cubic-bezier(0.38, 0.01, 0, 0.99);
+    }
+    
+    @keyframes logo-spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(90deg);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
+      75% {
+        transform: rotate(270deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+  
+  .logo {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 1rem;
+    transition: all 0.3s ease 0s;
+  }
+  
+  .project-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  }
+  
+  .toolbar {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .toolbar a {
+    margin: 0.5rem;
+  }
+  
+  /* From uiverse.io by @fanishah */
+  .card {
+      margin: 2rem;
+      min-width: 20rem;
+      max-width: 30rem;
+      height: 15rem;
+      background-color: #ffffff;
+      transition: all 0.2s ease-in;
+      box-shadow: var(--normal-shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .card * {
+      margin: 0.5rem 0;
+    }
+  
+    .card svg {
+      fill: var(--dt-blu);
+      width: 2rem;
+      height: 2rem;
+    }
+  
+    .card .button {
+      padding: 1rem;
+    }
+    
+    .card:hover {
+      box-shadow: 0px 0px 30px 1px rgba(40,40,40,0.2);
+    }
+  
+    .card:hover svg,.card:hover h2  {
+      fill: var(--light-blue);
+      color: var(--light-blue);
+    }
+  
+  /* From uiverse.io by @fanishah */
+  .card-locked {
+    margin: 2rem;
+    min-width: 20rem;
+    max-width: 30rem;
+    height: 15rem;
+    background-color: var(--light-gray);
+    transition: all 0.2s ease-in;
+    box-shadow: var(--normal-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card-locked * {
+    margin: 0.5rem 0;
+  }
+  
+  .card-locked svg {
+    fill: var(--dt-blu);
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .card-locked.button {
+    padding: 1rem;
+  }
+  
+  .card-locked:hover {
+    box-shadow: 0px 0px 30px 1px rgba(40,40,40,0.2);
+  }
+  
+  .card-locked:hover svg,.card:hover h2  {
+    fill: var(--light-blue);
+    color: var(--light-blue);
+  }
+  
+    /* From uiverse.io */
+  .button {
+      padding: 0.7rem;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 500;
+      color: #000;
+      background: var(--light-gray);
+      backdrop-filter: var(--blur-filter);
+      border: none;
+      border-radius: 45px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease 0s;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      width: fit-content;
+    }
+    
+    .button:hover {
+      background-image: var(--linear-gradient-red-blue);
+      box-shadow: 0px 15px 20px rgba(40, 40, 40, 0.4);
+      color: #fff;
+      fill: #fff;
+      transform: translateY(-3px);
+    }
+    
+    .button:active {
+      transform: translateY(-1px);
+    }
+  
+      /* From uiverse.io */
+  .button-locked {
+    padding: 0.7rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background: rgb(100,100,100,);
+    backdrop-filter: var(--blur-filter);
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+  }
+  
+  .button-locked:hover {
+    background-color:rgb(50,50,50);
+    color:white;
+    fill:rgb(50,50,50);
+    transform: translateY(-2px);
+  }
+  
+  .button-locked:active {
+    transform: translateY(-2px);
+  }
+  
+  
+    .simple-card-container {
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          width: 100%;
+    }
+  
+    /* From uiverse.io by @adamgiebl */
+  .simple-card {
+      margin: 1rem;
+      z-index: 1;
+      width: 190px;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: var(--translucent-white);
+      box-shadow: var(--normal-shadow);
+      backdrop-filter: var(--blur-filter);
+     }
+  
+  /* From uiverse.io by @fanishah */
+  .card2 {
+    margin: 2rem;
+    min-width: 20rem;
+    max-width: 30rem;
+    height: 30rem;
+    background-color: #ffffff;
+    transition: all 0.2s ease-in;
+    box-shadow: var(--normal-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card2 * {
+    margin: 0.5rem 0;
+  }
+  
+  .card2 svg {
+    fill: var(--dt-blu);
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .card2 .button {
+    padding: 2rem;
+    margin: 2rem;
+  }
+  
+  .card2:hover {
+    box-shadow: 0px 0px 30px 1px rgba(40,40,40,0.2);
+  }
+  
+  .card2:hover svg,.card:hover h2  {
+    fill: var(--light-blue);
+    color: var(--light-blue);
+  }
+  
+    /* From uiverse.io */
+    .button2 {
+      padding: 2rem;
+      margin: 2rem;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 500;
+      color: #000;
+      background: var(--light-gray);
+      backdrop-filter: var(--blur-filter);
+      border: none;
+      border-radius: 45px;
+      box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease 0s;
+      cursor: pointer;
+      outline: none;
+      display: flex;
+      align-items: center;
+      width: 15rem;
+      height: 5rem;
+    }
+    
+    .button2:hover {
+      background-image: var(--linear-gradient-red-blue);
+      box-shadow: 0px 15px 20px rgba(40, 40, 40, 0.4);
+      color: #fff;
+      fill: #fff;
+      transform: translateY(-3px);
+    }
+    
+    .button2:active {
+      transform: translateY(-1px);
+    }
+  
+      /* From uiverse.io */
+  .button-locked {
+    padding: 0.7rem;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background: rgb(100,100,100,);
+    backdrop-filter: var(--blur-filter);
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+  }
+  
+
+.banner{
+  background-color: var(--light-gray);
+  height: 2rem;
+}
+
+.chart{
+  width: 15rem;
+}
+
+.cardOpenAI {
+  background-color: #fff; /* White background */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); /* Add some shadow */
+  padding: 20px; /* Add some padding */
+  margin: 20px 0; /* Add some space between cards */
+}
+
+.numberOpenAI {
+  font-size: 36px; /* Set a large font size */
+  font-weight: bold; /* Make the number bold */
+  color: #333; /* Use a dark color */
+  margin-bottom: 20px; /* Add some space below the number */
+}
+
+#left-bar {
+  width: 3rem;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(250,250,250);
+  border-right: 1px solid rgba(200,200,200);
+}
+
+#name-div {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-left: 3rem;
+  color:rgb(70, 70, 70);
+}
+
+.canvas-title {
+  font-size: 1rem;
+  margin-left: 4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: rgb(120,120,120);
+}
+
+.viewer{
+  width: 45rem;
+  height: 25rem;
+  background-color: rgb(250,250,250);
+  margin-left: 4rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+h10 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgb(120,120,120);
+  margin-left: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h11 {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgb(120,120,120);
+  margin-left: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+
+h12 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(255,122,122);
+  margin-left: 0.5rem;
+  margin-bottom: 0.2rem;
+  padding-bottom: 1rem;
+}
+
+h13 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(120,120,120);
+  margin-left: 0.5rem;
+  margin-bottom: 0.2rem;
+  padding-bottom: 1rem;
+}
+
+.time {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(60,60,60);
+  margin-left: 0.5rem;
+  margin-bottom: 0.2rem;
+  padding-bottom: 1rem;
+}
+
+.input-panel{
+  background-color: rgb(240,240,240);
+  margin-top: 1rem;
+  width: 8rem;
+  position: absolute; 
+  left:40rem; 
+}
+
+
+
+.input-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgb(120,120,120);
+  margin-left: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.input-select {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgb(255,122,122);
+  margin-left: 0.5rem;
+  margin-bottom: 0.5rem;
+  width:5rem;
+}
+
+#three-canvas{    
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+  width: 34rem; 
+  height: 21.5rem;
+}
+
+#operational-parameters{
+  width: 22rem;
+  height: 14rem;
+  background-color: rgb(250,250,250);
+  margin-left: 1rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0rem;
+}
+
+#operational-parameters-2{
+  width: 22rem;
+  height: 14rem;
+  background-color: rgb(250,250,250);
+  margin-left: 4rem;
+  margin-top: 1rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0rem;
+}
+
+#percentage-panel{
+  width: 13rem;
+  height: 25rem;
+  background-color: rgb(250,250,250);
+  margin-left: 1rem;
+  margin-top: 0rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0rem;
+}
+
+#lineplot-panel{
+  width: 28rem;
+  height: 25rem;
+  background-color: rgb(250,250,250);
+  margin-left: 1rem;
+  margin-top: 0rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0rem;
+}
+
+#myChart {
+  width: 600px;
+  height: 300px;
+}
+
+#lineplot-panel-2{
+  width: 28rem;
+  height: 12rem;
+  background-color: rgb(250,250,250);
+  margin-left: 1rem;
+  margin-top: 0rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-right: 0rem;
+}
+
+#myChart-building {
+  width: 600px;
+}
+
+.lineplot{
+  height: 12rem;
+}
+
+#myChart-space-doughnut{
+  height: 15rem;
+}
+
+
+
+
+
+

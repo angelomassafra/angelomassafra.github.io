@@ -202,7 +202,7 @@ def PlotlyFig_Set_Layout(fig):
 def main():
 
     #Title
-    st.markdown("<h1 style='font-size:24px;'>Topologic Viewer</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='font-size:24px;'>Viewer</h1>", unsafe_allow_html=True)
 
     #Sidebar
     st.sidebar.title("Input")
