@@ -104338,8 +104338,8 @@ class OrbitControls extends EventDispatcher {
 }
 
 //IMPORT LIBRARIES
-  
-  // THREE SCENE
+
+// THREE SCENE
 //Creates the Three.js scene
 const scene = new Scene();
 //Object to store the size of the viewport
@@ -104392,9 +104392,6 @@ window.addEventListener("resize", () => {
   renderer.setSize(size.width, size.height);
 });
 
-
-
-
 //SELECTION
 
 //Sets up the IFC loading
@@ -104407,21 +104404,20 @@ async function loadIFC() {
   scene.add(model);
   ifcModels.push(model);
 }
-
 loadIFC();
 
 // Sets up optimized picking
 ifcLoader.ifcManager.setupThreeMeshBVH(
   computeBoundsTree,
   disposeBoundsTree,
-  acceleratedRaycast);
+  acceleratedRaycast
+);
 
 const raycaster = new Raycaster();
 raycaster.firstHitOnly = true;
 const mouse = new Vector2$1();
 
 function cast(event) {
-
   // Computes the position of the mouse on the screen
   const bounds = threeCanvas.getBoundingClientRect();
 
@@ -104446,14 +104442,14 @@ const output_category = document.getElementById("type-output");
 function pick(event) {
   const found = cast(event)[0];
   if (found) {
-      const index = found.faceIndex;
-      const geometry = found.object.geometry;
-      const ifc = ifcLoader.ifcManager;
-      const id = ifc.getExpressId(geometry, index);
-      const type = ifc.getIfcType(0,id);
+    const index = found.faceIndex;
+    const geometry = found.object.geometry;
+    const ifc = ifcLoader.ifcManager;
+    const id = ifc.getExpressId(geometry, index);
+    const type = ifc.getIfcType(0, id);
 
-      output_id.innerHTML = id;
-      output_category.innerHTML = type;
+    output_id.innerHTML = id;
+    output_category.innerHTML = type;
   }
 }
 

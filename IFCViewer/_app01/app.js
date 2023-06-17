@@ -1,31 +1,31 @@
 //IMPORT LIBRARIES
 import {
-    AmbientLight,
-    BoxGeometry,
-    AxesHelper,
-    DirectionalLight,
-    GridHelper,
-    Material,
-    MeshBasicMaterial,
-    PerspectiveCamera,
-    Scene,
-    WebGLRenderer,
-    Raycaster,
-    Vector2,
-    LineStrip,
-  } from "three"; //3D rendering
-  import { IFCSPACE } from "web-ifc"; //IFC
-  import { IFCLoader } from "web-ifc-three/IFCLoader"; //IFC
-  import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"; //orbit
-  import { MeshLambertMaterial } from "three"; //mesh
-  import { Mesh } from "three";
-  import {
-    acceleratedRaycast,
-    computeBoundsTree,
-    disposeBoundsTree,
-  } from "three-mesh-bvh"; ///Raycasting
-  
-  // THREE SCENE
+  AmbientLight,
+  BoxGeometry,
+  AxesHelper,
+  DirectionalLight,
+  GridHelper,
+  Material,
+  MeshBasicMaterial,
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  Raycaster,
+  Vector2,
+  LineStrip,
+} from "three"; //3D rendering
+import { IFCSPACE } from "web-ifc"; //IFC
+import { IFCLoader } from "web-ifc-three/IFCLoader"; //IFC
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"; //orbit
+import { MeshLambertMaterial } from "three"; //mesh
+import { Mesh } from "three";
+import {
+  acceleratedRaycast,
+  computeBoundsTree,
+  disposeBoundsTree,
+} from "three-mesh-bvh"; ///Raycasting
+
+// THREE SCENE
 //Creates the Three.js scene
 const scene = new Scene();
 //Object to store the size of the viewport
@@ -78,9 +78,6 @@ window.addEventListener("resize", () => {
   renderer.setSize(size.width, size.height);
 });
 
-
-
-
 //SELECTION
 
 //Sets up the IFC loading
@@ -93,21 +90,20 @@ async function loadIFC() {
   scene.add(model);
   ifcModels.push(model);
 }
-
-loadIFC();
+loadIFC()
 
 // Sets up optimized picking
 ifcLoader.ifcManager.setupThreeMeshBVH(
   computeBoundsTree,
   disposeBoundsTree,
-  acceleratedRaycast);
+  acceleratedRaycast
+);
 
 const raycaster = new Raycaster();
 raycaster.firstHitOnly = true;
 const mouse = new Vector2();
 
 function cast(event) {
-
   // Computes the position of the mouse on the screen
   const bounds = threeCanvas.getBoundingClientRect();
 
@@ -132,15 +128,18 @@ const output_category = document.getElementById("type-output");
 function pick(event) {
   const found = cast(event)[0];
   if (found) {
-      const index = found.faceIndex;
-      const geometry = found.object.geometry;
-      const ifc = ifcLoader.ifcManager;
-      const id = ifc.getExpressId(geometry, index);
-      const type = ifc.getIfcType(0,id)
+    const index = found.faceIndex;
+    const geometry = found.object.geometry;
+    const ifc = ifcLoader.ifcManager;
+    const id = ifc.getExpressId(geometry, index);
+    const type = ifc.getIfcType(0, id);
 
-      output_id.innerHTML = id;
-      output_category.innerHTML = type;
+    output_id.innerHTML = id;
+    output_category.innerHTML = type;
   }
 }
 
 window.ondblclick = pick;
+
+
+
