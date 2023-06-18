@@ -104399,7 +104399,7 @@ const ifcModels = [];
 const ifcLoader = new IFCLoader();
 const ifcUrl = "IFCSample_HomeMaker.ifc";
 async function loadIFC() {
-  await ifcLoader.ifcManager.setWasmPath("../../IFCViewer/wasm_wit/");
+  await ifcLoader.ifcManager.setWasmPath("../../IFC_Viewer/wasm_wit/");
   const model = await ifcLoader.loadAsync(ifcUrl);
   scene.add(model);
   ifcModels.push(model);
