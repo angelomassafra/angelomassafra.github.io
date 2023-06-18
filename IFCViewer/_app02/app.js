@@ -83,7 +83,7 @@ window.addEventListener("resize", () => {
 //Sets up the IFC loading
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
-const ifcUrl = "../static/IFCSample_HomeMaker.ifc";
+const ifcUrl = "../static/IFCSample_School.ifc";
 async function loadIFC() {
   await ifcLoader.ifcManager.setWasmPath("../../IFCViewer/wasm_wit/");
   const model = await ifcLoader.loadAsync(ifcUrl);
