@@ -104337,9 +104337,66 @@ class OrbitControls extends EventDispatcher {
 
 }
 
-//IMPORT LIBRARIES
+//SIMPLE IFC VIEWER WITH PICKING AND HIGHLIGHTING
 
-// THREE SCENE
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//01 - HELPER FUNCTIONS
+// Casting
+function cast(event) {
+  const bounds = threeCanvas.getBoundingClientRect();
+  const x1 = event.clientX - bounds.left;
+  const x2 = bounds.right - bounds.left;
+  mouse.x = (x1 / x2) * 2 - 1;
+  const y1 = event.clientY - bounds.top;
+  const y2 = bounds.bottom - bounds.top;
+  mouse.y = -(y1 / y2) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  return raycaster.intersectObjects(ifcModels);
+}
+// Picking
+function pick(event) {
+  const found = cast(event)[0];
+  if (found) {
+    const index = found.faceIndex;
+    const geometry = found.object.geometry;
+    const id = ifc.getExpressId(geometry, index); // Get IFC ID
+    const type = ifc.getIfcType(0, id); //Get IFC Category
+
+    output_id.innerHTML = id;
+    output_category.innerHTML = type;
+  }
+}
+// Highlightin
+function highlight(event, material, model, threeCanvas, camera, scene) {
+  const found = cast(event)[0];
+  if (found) {
+    // Gets model ID
+    model.id = found.object.modelID;
+    // Gets Express ID
+    const index = found.faceIndex;
+    const geometry = found.object.geometry;
+    const id = ifc.getExpressId(geometry, index);
+    // Creates subset
+    ifc.createSubset({
+      modelID: model.id,
+      ids: [id],
+      material: material,
+      scene: scene,
+      removePrevious: true,
+    });
+  } else {
+    // Removes previous highlight
+    ifc.removeSubset(model.id, material);
+  }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//02 - SETUP INPUTS
+const ifcUrl = "IFCSample_HomeMaker.ifc";
+const wasmPath = "../../IFC_Viewer/wasm_wit/";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//03 - SETUP THREE SCENE
 //Creates the Three.js scene
 const scene = new Scene();
 //Object to store the size of the viewport
@@ -104392,65 +104449,68 @@ window.addEventListener("resize", () => {
   renderer.setSize(size.width, size.height);
 });
 
-//SELECTION
-
-//Sets up the IFC loading
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//04 - SETUP IFC LOADER
 const ifcModels = [];
 const ifcLoader = new IFCLoader();
-const ifcUrl = "IFCSample_HomeMaker.ifc";
+const ifc = ifcLoader.ifcManager;
+
 async function loadIFC() {
-  await ifcLoader.ifcManager.setWasmPath("../../IFC_Viewer/wasm_wit/");
+  await ifc.setWasmPath(wasmPath);
   const model = await ifcLoader.loadAsync(ifcUrl);
   scene.add(model);
   ifcModels.push(model);
 }
 loadIFC();
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//05 - SETUP PICKER AND HIGHLIGHTER
 // Sets up optimized picking
-ifcLoader.ifcManager.setupThreeMeshBVH(
+ifc.setupThreeMeshBVH(
   computeBoundsTree,
   disposeBoundsTree,
   acceleratedRaycast
 );
-
+// Set up raycasting
 const raycaster = new Raycaster();
 raycaster.firstHitOnly = true;
 const mouse = new Vector2$1();
+// Selection material
+const selectMat = new MeshLambertMaterial({
+  transparent: true,
+  opacity: 1,
+  color: 0x097dc1,
+  depthTest: false,
+});
+// Reference to the previous selection
+const selectModel = { id: -1 };
+// Preselection material
+const preselectMat = new MeshLambertMaterial({
+  transparent: true,
+  opacity: 0.5,
+  color: 0x097dc1,
+  depthTest: false,
+});
+// Reference to the previous selection
+let preselectModel = { id: -1 };
 
-function cast(event) {
-  // Computes the position of the mouse on the screen
-  const bounds = threeCanvas.getBoundingClientRect();
-
-  const x1 = event.clientX - bounds.left;
-  const x2 = bounds.right - bounds.left;
-  mouse.x = (x1 / x2) * 2 - 1;
-
-  const y1 = event.clientY - bounds.top;
-  const y2 = bounds.bottom - bounds.top;
-  mouse.y = -(y1 / y2) * 2 + 1;
-
-  // Places it on the camera pointing to the mouse
-  raycaster.setFromCamera(mouse, camera);
-
-  // Casts a ray
-  return raycaster.intersectObjects(ifcModels);
-}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//06 - HTML INTERACTION
+// Output panel
 const output_id = document.getElementById("id-output");
 const output_category = document.getElementById("type-output");
-
-function pick(event) {
-  const found = cast(event)[0];
-  if (found) {
-    const index = found.faceIndex;
-    const geometry = found.object.geometry;
-    const ifc = ifcLoader.ifcManager;
-    const id = ifc.getExpressId(geometry, index);
-    const type = ifc.getIfcType(0, id);
-
-    output_id.innerHTML = id;
-    output_category.innerHTML = type;
-  }
-}
-
 window.ondblclick = pick;
+// Preselection
+threeCanvas.onmousemove = (event) =>
+highlight(
+  event,
+  preselectMat,
+  preselectModel,
+  threeCanvas,
+  camera,
+  scene
+);
+// Selection
+threeCanvas.ondblclick = (event) => {
+  highlight(event, selectMat, selectModel, threeCanvas, camera, scene);
+};
