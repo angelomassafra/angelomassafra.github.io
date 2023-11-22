@@ -37,13 +37,16 @@ function cast(event) {
   return raycaster.intersectObjects(ifcModels);
 }
 // Picking
-function pick(event) {
+async function pick(event) {
   const found = cast(event)[0];
   if (found) {
     const index = found.faceIndex;
     const geometry = found.object.geometry;
+    const ifc = ifcLoader.ifcManager
     const id = ifc.getExpressId(geometry, index); // Get IFC ID
     const type = ifc.getIfcType(0, id); //Get IFC Category
+    const name = await ifc.getItemProperties(0,id,true).Name
+    console.log(name)
 
     output_id.innerHTML = id;
     output_category.innerHTML = type;

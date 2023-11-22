@@ -87891,7 +87891,7 @@ function getLongestEdgeIndex( bounds ) {
 
 }
 
-// copys bounds a into bounds b
+// copies bounds a into bounds b
 function copyBounds( source, target ) {
 
 	target.set( source );
@@ -88429,7 +88429,7 @@ function getOptimalSplit( nodeBoundingData, centroidBoundingData, triangleBounds
 					const nextBin = sahBins[ i + 1 ];
 					const rightBounds = nextBin.rightCacheBounds;
 
-					// dont do anything with the bounds if the new bounds have no triangles
+					// don't do anything with the bounds if the new bounds have no triangles
 					if ( binCount !== 0 ) {
 
 						if ( leftCount === 0 ) {
@@ -89422,7 +89422,7 @@ ExtendedTriangle.prototype.intersectsTriangle = ( function () {
 
 			}
 
-			if ( count1 === 1 && this.containsPoint( edge1.end ) ) {
+			if ( count1 === 1 && other.containsPoint( edge1.end ) ) {
 
 				if ( target ) {
 
@@ -89664,13 +89664,13 @@ ExtendedTriangle.prototype.distanceToTriangle = ( function () {
 
 } )();
 
-class OrientedBox extends Box3 {
+class OrientedBox {
 
-	constructor( ...args ) {
-
-		super( ...args );
+	constructor( min, max, matrix ) {
 
 		this.isOrientedBox = true;
+		this.min = new Vector3$1();
+		this.max = new Vector3$1();
 		this.matrix = new Matrix4();
 		this.invMatrix = new Matrix4();
 		this.points = new Array( 8 ).fill().map( () => new Vector3$1() );
@@ -89679,11 +89679,16 @@ class OrientedBox extends Box3 {
 		this.alignedSatBounds = new Array( 3 ).fill().map( () => new SeparatingAxisBounds() );
 		this.needsUpdate = false;
 
+		if ( min ) this.min.copy( min );
+		if ( max ) this.max.copy( max );
+		if ( matrix ) this.matrix.copy( matrix );
+
 	}
 
 	set( min, max, matrix ) {
 
-		super.set( min, max );
+		this.min.copy( min );
+		this.max.copy( max );
 		this.matrix.copy( matrix );
 		this.needsUpdate = true;
 
@@ -89691,7 +89696,8 @@ class OrientedBox extends Box3 {
 
 	copy( other ) {
 
-		super.copy( other );
+		this.min.copy( other.min );
+		this.max.copy( other.max );
 		this.matrix.copy( other.matrix );
 		this.needsUpdate = true;
 
@@ -104354,13 +104360,16 @@ function cast(event) {
   return raycaster.intersectObjects(ifcModels);
 }
 // Picking
-function pick(event) {
+async function pick(event) {
   const found = cast(event)[0];
   if (found) {
     const index = found.faceIndex;
     const geometry = found.object.geometry;
+    const ifc = ifcLoader.ifcManager;
     const id = ifc.getExpressId(geometry, index); // Get IFC ID
     const type = ifc.getIfcType(0, id); //Get IFC Category
+    const name = await ifc.getItemProperties(0,id,true).Name;
+    console.log(name);
 
     output_id.innerHTML = id;
     output_category.innerHTML = type;
@@ -104395,6 +104404,10 @@ function highlight(event, material, model, threeCanvas, camera, scene) {
 const ifcUrl = "IFCSample_HomeMaker.ifc";
 const wasmPath = "../../IFC_Viewer/wasm_wit/";
 
+const cameraPositionZ = 20;
+const cameraPositionY = 10;
+const cameraPositionX = 0;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //03 - SETUP THREE SCENE
 //Creates the Three.js scene
@@ -104406,9 +104419,9 @@ const size = {
 };
 //Creates the camera (point of view of the user)
 const camera = new PerspectiveCamera(75, size.width / size.height);
-camera.position.z = 20;
-camera.position.y = 10;
-camera.position.x = 0;
+camera.position.z = cameraPositionZ;
+camera.position.y = cameraPositionY;
+camera.position.x = cameraPositionX;
 //Creates the lights of the scene
 const lightColor = 0xffffff;
 const ambientLight = new AmbientLight(lightColor, 0.5);
